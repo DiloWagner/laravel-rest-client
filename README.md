@@ -1,2 +1,3 @@
-# laravel-rest-client
-Projeto do Curso de Laravel
+#Projeto do Curso de Laravel
+
+API Rest para do módulo Client para o curso de Laravel.
