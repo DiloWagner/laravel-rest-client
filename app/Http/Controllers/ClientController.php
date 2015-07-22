@@ -2,6 +2,7 @@
 
 namespace CursoLaravel\Http\Controllers;
 
+use CursoLaravel\Client;
 use Illuminate\Http\Request;
 
 use CursoLaravel\Http\Requests;
@@ -16,17 +17,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return \CursoLaravel\Client::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
+        return Client::all();
     }
 
     /**
@@ -37,7 +28,7 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        return \CursoLaravel\Client::create($request->all());
+        return Client::create($request->all());
     }
 
     /**
@@ -48,18 +39,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
+        return Client::find($id);
     }
 
     /**
@@ -71,7 +51,9 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $client = Client::find($id);
+        $client->update($request->all());
+        return $client;
     }
 
     /**
@@ -82,6 +64,7 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $client = Client::find($id);
+        $client->delete();
     }
 }
