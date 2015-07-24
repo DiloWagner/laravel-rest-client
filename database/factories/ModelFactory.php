@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(CursoLaravel\User::class, function (Faker\Generator $faker) {
+$factory->define(CursoLaravel\Entities\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
@@ -20,7 +20,7 @@ $factory->define(CursoLaravel\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(CursoLaravel\Client::class, function (Faker\Generator $faker) {
+$factory->define(CursoLaravel\Entities\Client::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'responsible' => $faker->name,
@@ -28,5 +28,15 @@ $factory->define(CursoLaravel\Client::class, function (Faker\Generator $faker) {
         'phone' => $faker->phoneNumber,
         'address' => $faker->address,
         'obs' => $faker->sentence,
+    ];
+});
+
+$factory->define(CursoLaravel\Entities\Project::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->name,
+        'description' => $faker->name,
+        'progress' => $faker->email,
+        'status' => $faker->phoneNumber,
+        'due_date' => $faker->address
     ];
 });

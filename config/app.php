@@ -137,12 +137,14 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
         /*
          * Application Service Providers...
          */
         CursoLaravel\Providers\AppServiceProvider::class,
         CursoLaravel\Providers\EventServiceProvider::class,
         CursoLaravel\Providers\RouteServiceProvider::class,
+        CursoLaravel\Providers\CursoLaravelRepositoryProvider::class
 
     ],
 
