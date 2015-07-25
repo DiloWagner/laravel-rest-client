@@ -4,7 +4,7 @@ namespace CursoLaravel\Repositories;
 use CursoLaravel\Entities\Project;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class ProjectRepositoryEloquent extends BaseRepository implements ClientRepository
+class ProjectRepositoryEloquent extends BaseRepository implements ProjectRepository
 {
     /**
      * Specify Model class name

@@ -1,21 +1,21 @@
 <?php
 namespace CursoLaravel\Http\Controllers;
 
-use CursoLaravel\Services\ClientService;
+use CursoLaravel\Services\ProjectService;
 use Illuminate\Http\Request;
 use CursoLaravel\Http\Requests;
 
-class ClientController extends Controller
+class ProjectController extends Controller
 {
     /**
-     * @var ClientService
+     * @var ProjectService
      */
     private $service;
 
     /**
-     * @param ClientService $service
+     * @param ProjectService $service
      */
-    function __construct(ClientService $service)
+    function __construct(ProjectService $service)
     {
         $this->service = $service;
     }
