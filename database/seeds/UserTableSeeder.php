@@ -12,6 +12,6 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         \CursoLaravel\Entities\User::truncate();
-        //factory(\CursoLaravel\Entities\User::class, 10)->create();
+        factory(\CursoLaravel\Entities\User::class, 10)->create();
     }
 }

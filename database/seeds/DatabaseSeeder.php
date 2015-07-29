@@ -14,9 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
         \Illuminate\Support\Facades\DB::statement("SET foreign_key_checks = 0");
-        $this->call(ClientTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(ClientTableSeeder::class);
         $this->call(ProjectTableSeeder::class);
+        $this->call(ProjectNoteTableSeeder::class);
         \Illuminate\Support\Facades\DB::statement("SET foreign_key_checks = 1");
         Model::reguard();
     }

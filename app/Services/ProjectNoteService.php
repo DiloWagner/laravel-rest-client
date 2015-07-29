@@ -1,12 +1,13 @@
 <?php
 namespace CursoLaravel\Services;
 
+use CursoLaravel\Repositories\ProjectNoteRepository;
 use CursoLaravel\Repositories\ProjectRepository;
 use CursoLaravel\Validators\ProjectValidator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Prettus\Validator\Exceptions\ValidatorException;
 
-class ProjectService
+class ProjectNoteService
 {
     /**
      * @var ProjectRepository
@@ -19,10 +20,10 @@ class ProjectService
     protected $validator;
 
     /**
-     * @param ProjectRepository $repository
+     * @param ProjectNoteRepository $repository
      * @param ProjectValidator $validator
      */
-    public function __construct(ProjectRepository $repository, ProjectValidator $validator)
+    public function __construct(ProjectNoteRepository $repository, ProjectValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;

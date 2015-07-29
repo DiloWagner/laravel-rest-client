@@ -33,12 +33,20 @@ $factory->define(CursoLaravel\Entities\Client::class, function (Faker\Generator 
 
 $factory->define(CursoLaravel\Entities\Project::class, function (Faker\Generator $faker) {
     return [
-        'owner_id' => factory(\CursoLaravel\Entities\User::class)->create()->id,
-        'client_id' => factory(\CursoLaravel\Entities\Client::class)->create()->id,
+        'owner_id' => rand(1, 10),
+        'client_id' => rand(1, 10),
         'name' => $faker->name,
         'description' => $faker->sentence,
-        'progress' => 0,
-        'status' => true,
-        'due_date' => $faker->dateTime
+        'progress' => rand(1, 100),
+        'status' => rand(1, 3),
+        'due_date' => $faker->dateTime('now')
+    ];
+});
+
+$factory->define(CursoLaravel\Entities\ProjectNote::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1, 10),
+        'title' => $faker->word,
+        'note' => $faker->paragraph
     ];
 });
