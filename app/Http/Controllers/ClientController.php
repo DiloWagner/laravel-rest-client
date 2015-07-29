@@ -1,9 +1,13 @@
 <?php
 namespace CursoLaravel\Http\Controllers;
 
+use CursoLaravel\Exceptions\ClientDatabaseException;
+use CursoLaravel\Exceptions\Enums\Error;
 use CursoLaravel\Services\ClientService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use CursoLaravel\Http\Requests;
+use Illuminate\Http\Response;
 
 class ClientController extends Controller
 {
@@ -29,10 +33,8 @@ class ClientController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
+     * @param Request $request
+     * @return mixed
      */
     public function store(Request $request)
     {
@@ -40,36 +42,64 @@ class ClientController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse|mixed
      */
     public function show($id)
     {
-        return $this->service->find($id);
+        try {
+            return $this->service->find($id);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => Error::UNEXPECTED_ERROR,
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param $id
+     * @return array|\Illuminate\Http\JsonResponse|mixed
      */
     public function update(Request $request, $id)
     {
-        return $this->service->update($request->all(), $id);
+        try {
+            return $this->service->update($request->all(), $id);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => Error::UNEXPECTED_ERROR,
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        $this->service->destroy($id);
+        try {
+            $this->service->destroy($id);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(ClientDatabaseException $ce) {
+            return response()->json([
+                'message' => $ce->getErrorMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => Error::UNEXPECTED_ERROR,
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

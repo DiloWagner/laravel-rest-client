@@ -1,8 +1,11 @@
 <?php
 namespace CursoLaravel\Services;
 
+use CursoLaravel\Exceptions\ClientDatabaseException;
 use CursoLaravel\Repositories\ClientRepository;
 use CursoLaravel\Validators\ClientValidator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class ClientService
@@ -38,15 +41,24 @@ class ClientService
     /**
      * @param $id
      * @return mixed
+     * @throws ModelNotFoundException
+     * @throws \Exception
      */
     public function find($id)
     {
-        return $this->repository->find($id);
+        try {
+            return $this->repository->find($id);
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**
      * @param array $data
-     * @return mixed
+     * @return array|mixed
+     * @throws \Exception
      */
     public function create(array $data)
     {
@@ -55,16 +67,19 @@ class ClientService
             return $this->repository->create($data);
         } catch(ValidatorException $e) {
             return [
-                'error' => true,
+                'error'    => true,
                 'messages' => $e->getMessageBag()
             ];
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 
     /**
      * @param array $data
      * @param $id
-     * @return mixed
+     * @return array|mixed
+     * @throws \Exception
      */
     public function update(array $data, $id)
     {
@@ -76,14 +91,27 @@ class ClientService
                 'error' => true,
                 'messages' => $e->getMessageBag()
             ];
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 
     /**
      * @param $id
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        $this->repository->delete($id);
+        try {
+            $this->repository->delete($id);
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (QueryException $qe) {
+            throw new ClientDatabaseException($qe->getCode());
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

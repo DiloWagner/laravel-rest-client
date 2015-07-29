@@ -55,11 +55,11 @@ class ProjectController extends Controller
         } catch(ModelNotFoundException $mnf) {
             return response()->json([
                 'message' => Error::RECORD_NOT_FOUND,
-            ], 404);
+            ], Response::HTTP_NOT_FOUND);
         } catch(\Exception $e) {
             return response()->json([
                 'message' => Error::UNEXPECTED_ERROR,
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -76,12 +76,12 @@ class ProjectController extends Controller
             return $this->service->update($request->all(), $id);
         } catch(ModelNotFoundException $mnf) {
             return response()->json([
-                'message' => Error::RECORD_NOT_FOUND,
-            ], 404);
+                'message' => Response::HTTP_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
         } catch(\Exception $e) {
             return response()->json([
                 'message' => Error::UNEXPECTED_ERROR,
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -98,11 +98,11 @@ class ProjectController extends Controller
         } catch(ModelNotFoundException $mnf) {
             return response()->json([
                 'message' => Error::RECORD_NOT_FOUND,
-            ], 404);
+            ], Response::HTTP_NOT_FOUND);
         } catch(\Exception $e) {
             return response()->json([
                 'message' => Error::UNEXPECTED_ERROR,
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

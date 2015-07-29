@@ -49,7 +49,6 @@ class ProjectService
     /**
      * @param $id
      * @return mixed
-     * @throws NotfoundException
      * @throws \Exception
      */
     public function find($id)
@@ -65,7 +64,8 @@ class ProjectService
 
     /**
      * @param array $data
-     * @return mixed
+     * @return array|mixed
+     * @throws \Exception
      */
     public function create(array $data)
     {
@@ -74,16 +74,19 @@ class ProjectService
             return $this->repository->create($data);
         } catch(ValidatorException $e) {
             return [
-                'error' => true,
+                'error'    => true,
                 'messages' => $e->getMessageBag()
             ];
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 
     /**
      * @param array $data
      * @param $id
-     * @return mixed
+     * @return array|mixed
+     * @throws \Exception
      */
     public function update(array $data, $id)
     {
@@ -95,14 +98,25 @@ class ProjectService
                 'error' => true,
                 'messages' => $e->getMessageBag()
             ];
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 
     /**
      * @param $id
+     * @throws \Exception
      */
     public function destroy($id)
     {
-        $this->repository->delete($id);
+        try {
+            $this->repository->delete($id);
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }
