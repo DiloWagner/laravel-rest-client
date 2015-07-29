@@ -1,5 +1,4 @@
 <?php
-
 namespace CursoLaravel\Entities;
 
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +8,13 @@ use Prettus\Repository\Traits\TransformableTrait;
 class ProjectNote extends Model implements Transformable
 {
     use TransformableTrait;
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['project_id'];
 
     protected $fillable = [
         'project_id',

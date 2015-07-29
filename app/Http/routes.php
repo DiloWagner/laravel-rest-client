@@ -26,3 +26,9 @@ Route::post('project', 'ProjectController@store');
 Route::put('project/{id}', 'ProjectController@update');
 Route::get('project/{id}', 'ProjectController@show');
 Route::delete('project/{id}', 'ProjectController@destroy');
+
+Route::get('project-note', 'ProjectNoteController@index');
+Route::post('project-note', 'ProjectNoteController@store');
+Route::put('project-note/{id}', 'ProjectNoteController@update');
+Route::get('project-note/{id}', 'ProjectNoteController@show');
+Route::delete('project-note/{id}', 'ProjectNoteController@destroy');

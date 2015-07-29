@@ -2,28 +2,27 @@
 namespace CursoLaravel\Services;
 
 use CursoLaravel\Repositories\ProjectNoteRepository;
-use CursoLaravel\Repositories\ProjectRepository;
-use CursoLaravel\Validators\ProjectValidator;
+use CursoLaravel\Validators\ProjectNoteValidator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class ProjectNoteService
 {
     /**
-     * @var ProjectRepository
+     * @var ProjectNoteRepository
      */
     protected $repository;
 
     /**
-     * @var ProjectValidator
+     * @var ProjectNoteValidator
      */
     protected $validator;
 
     /**
      * @param ProjectNoteRepository $repository
-     * @param ProjectValidator $validator
+     * @param ProjectNoteValidator $validator
      */
-    public function __construct(ProjectNoteRepository $repository, ProjectValidator $validator)
+    public function __construct(ProjectNoteRepository $repository, ProjectNoteValidator $validator)
     {
         $this->repository = $repository;
         $this->validator  = $validator;
@@ -34,7 +33,7 @@ class ProjectNoteService
      */
     private function findWithRelationship()
     {
-        return $this->repository->with(['owner', 'client']);
+        return $this->repository->with(['project']);
     }
 
     /**
