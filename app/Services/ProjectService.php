@@ -1,8 +1,11 @@
 <?php
 namespace CursoLaravel\Services;
 
+use CursoLaravel\Entities\Project;
+use CursoLaravel\Exceptions\NotfoundException;
 use CursoLaravel\Repositories\ProjectRepository;
 use CursoLaravel\Validators\ProjectValidator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Prettus\Validator\Exceptions\ValidatorException;
 
 class ProjectService
@@ -46,10 +49,18 @@ class ProjectService
     /**
      * @param $id
      * @return mixed
+     * @throws NotfoundException
+     * @throws \Exception
      */
     public function find($id)
     {
-        return $this->findWithRelationship()->find($id);
+        try {
+            return $this->findWithRelationship()->find($id);
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     /**

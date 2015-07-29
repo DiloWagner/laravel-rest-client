@@ -1,9 +1,12 @@
 <?php
 namespace CursoLaravel\Http\Controllers;
 
+use CursoLaravel\Exceptions\Enums\Error;
 use CursoLaravel\Services\ProjectService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use CursoLaravel\Http\Requests;
+use Illuminate\Http\Response;
 
 class ProjectController extends Controller
 {
@@ -15,7 +18,7 @@ class ProjectController extends Controller
     /**
      * @param ProjectService $service
      */
-    function __construct(ProjectService $service)
+    public function __construct(ProjectService $service)
     {
         $this->service = $service;
     }
@@ -47,7 +50,17 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        return $this->service->find($id);
+        try {
+            return $this->service->find($id);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], 404);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => Error::UNEXPECTED_ERROR,
+            ], 500);
+        }
     }
 
     /**
@@ -59,7 +72,17 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $this->service->update($request->all(), $id);
+        try {
+            return $this->service->update($request->all(), $id);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], 404);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => Error::UNEXPECTED_ERROR,
+            ], 500);
+        }
     }
 
     /**
@@ -70,6 +93,16 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $this->service->destroy($id);
+        try {
+            $this->service->destroy($id);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], 404);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => Error::UNEXPECTED_ERROR,
+            ], 500);
+        }
     }
 }
