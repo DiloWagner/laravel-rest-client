@@ -32,3 +32,9 @@ Route::post('project-note', 'ProjectNoteController@store');
 Route::put('project-note/{id}', 'ProjectNoteController@update');
 Route::get('project-note/{id}', 'ProjectNoteController@show');
 Route::delete('project-note/{id}', 'ProjectNoteController@destroy');
+
+Route::get('project-task', 'ProjectTaskController@index');
+Route::post('project-task', 'ProjectTaskController@store');
+Route::put('project-task/{id}', 'ProjectTaskController@update');
+Route::get('project-task/{id}', 'ProjectTaskController@show');
+Route::delete('project-task/{id}', 'ProjectTaskController@destroy');
