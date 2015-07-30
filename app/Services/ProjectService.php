@@ -1,6 +1,8 @@
 <?php
 namespace CursoLaravel\Services;
 
+use CursoLaravel\Entities\User;
+use CursoLaravel\Exceptions\RecordNotFoundException;
 use CursoLaravel\Repositories\ProjectRepository;
 use CursoLaravel\Validators\ProjectValidator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -116,5 +118,80 @@ class ProjectService
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function findMembersByProject($id)
+    {
+        try {
+            return $this->repository->with(['members'])->find($id)->members;
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $projectId
+     * @param $memberId
+     * @return mixed
+     * @throws \Exception
+     */
+    public function addMember($projectId, $memberId)
+    {
+        try {
+            $member = User::find($memberId);
+            if(! ($member instanceof User)) {
+                throw new RecordNotFoundException(sprintf("Member with id [%s] not found", $memberId));
+            }
+            return $this->repository->with(['members'])->find($projectId)->members()->attach($memberId);
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $projectId
+     * @param $memberId
+     * @return mixed
+     * @throws \Exception
+     */
+    public function removeMember($projectId, $memberId)
+    {
+        try {
+            $project = $this->repository->with(['members'])->find($projectId);
+            $members = $project->members;
+            if(! ($members->contains($memberId))) {
+                throw new RecordNotFoundException(sprintf("Member with id [%s] not found", $memberId));
+            }
+            return $project->members()->detach($memberId);
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $projectId
+     * @param $memberId
+     * @return mixed
+     * @throws \Exception
+     */
+    public function isMember($projectId, $memberId)
+    {
+        $project = $this->repository->with(['members'])->find($projectId);
+        $members = $project->members;
+        if(! ($members->contains($memberId))) {
+            return false;
+        }
+        return true;
     }
 }

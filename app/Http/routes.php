@@ -26,6 +26,10 @@ Route::post('project', 'ProjectController@store');
 Route::put('project/{id}', 'ProjectController@update');
 Route::get('project/{id}', 'ProjectController@show');
 Route::delete('project/{id}', 'ProjectController@destroy');
+Route::get('project/{project}/members', 'ProjectController@members');
+Route::post('project/{project}/add-member', 'ProjectController@addMember');
+Route::delete('project/{project}/remove-member', 'ProjectController@removeMember');
+Route::get('project/{project}/is-member/{member}', 'ProjectController@isMember');
 
 Route::get('project-note', 'ProjectNoteController@index');
 Route::post('project-note', 'ProjectNoteController@store');

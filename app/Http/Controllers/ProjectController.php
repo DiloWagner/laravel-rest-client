@@ -2,6 +2,7 @@
 namespace CursoLaravel\Http\Controllers;
 
 use CursoLaravel\Exceptions\Enums\Error;
+use CursoLaravel\Exceptions\RecordNotFoundException;
 use CursoLaravel\Services\ProjectService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -104,5 +105,87 @@ class ProjectController extends Controller
                 'message' => Error::UNEXPECTED_ERROR,
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * @param $project
+     * @return mixed
+     */
+    public function members($project)
+    {
+        try {
+            return $this->service->findMembersByProject($project);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $project
+     * @return mixed
+     */
+    public function addMember(Request $request, $project)
+    {
+        try {
+            $member = $request->get('member', 0);
+            return $this->service->addMember($project, $member);
+        } catch (RecordNotFoundException $re) {
+            return response()->json([
+                'message' => $re->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param $project
+     * @return mixed
+     */
+    public function removeMember(Request $request, $project)
+    {
+        try {
+            $member = $request->get('member', 0);
+            return $this->service->removeMember($project, $member);
+        } catch (RecordNotFoundException $re) {
+            return response()->json([
+                'message' => $re->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @param $member
+     * @param $project
+     * @return mixed
+     */
+    public function isMember($project, $member)
+    {
+        $isMember = $this->service->isMember($project, $member);
+        return response()->json([
+            'response' => $isMember,
+        ], Response::HTTP_OK);
     }
 }

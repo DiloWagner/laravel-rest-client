@@ -50,4 +50,12 @@ class Project extends Model
     {
         return $this->hasMany(ProjectTask::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'project_members');
+    }
 }

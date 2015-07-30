@@ -60,3 +60,10 @@ $factory->define(CursoLaravel\Entities\ProjectTask::class, function (Faker\Gener
         'status' => rand(1, 3)
     ];
 });
+
+$factory->define(CursoLaravel\Entities\ProjectMembers::class, function (Faker\Generator $faker) {
+    return [
+        'project_id' => rand(1, 10),
+        'user_id'    => rand(1, 10)
+    ];
+});
