@@ -194,4 +194,36 @@ class ProjectService
         }
         return true;
     }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function findTasksByProject($id)
+    {
+        try {
+            return $this->repository->with(['tasks'])->find($id)->tasks;
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     */
+    public function findNotesByProject($id)
+    {
+        try {
+            return $this->repository->with(['notes'])->find($id)->notes;
+        } catch (ModelNotFoundException $mnf) {
+            throw $mnf;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }

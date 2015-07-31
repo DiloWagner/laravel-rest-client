@@ -188,4 +188,42 @@ class ProjectController extends Controller
             'response' => $isMember,
         ], Response::HTTP_OK);
     }
+
+    /**
+     * @param $project
+     * @return mixed
+     */
+    public function tasks($project)
+    {
+        try {
+            return $this->service->findTasksByProject($project);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * @param $project
+     * @return mixed
+     */
+    public function notes($project)
+    {
+        try {
+            return $this->service->findNotesByProject($project);
+        } catch(ModelNotFoundException $mnf) {
+            return response()->json([
+                'message' => Error::RECORD_NOT_FOUND,
+            ], Response::HTTP_NOT_FOUND);
+        } catch(\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

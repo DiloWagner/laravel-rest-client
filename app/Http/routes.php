@@ -30,6 +30,8 @@ Route::get('project/{project}/members', 'ProjectController@members');
 Route::post('project/{project}/add-member', 'ProjectController@addMember');
 Route::delete('project/{project}/remove-member', 'ProjectController@removeMember');
 Route::get('project/{project}/is-member/{member}', 'ProjectController@isMember');
+Route::get('project/{project}/tasks', 'ProjectController@tasks');
+Route::get('project/{project}/notes', 'ProjectController@notes');
 
 Route::get('project-note', 'ProjectNoteController@index');
 Route::post('project-note', 'ProjectNoteController@store');
